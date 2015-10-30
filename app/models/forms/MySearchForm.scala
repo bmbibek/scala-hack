@@ -1,4 +1,4 @@
-package models
+package models.forms
 import play.api.libs.json.Json
 
 case class MySearchForm (searchQuery: String)
