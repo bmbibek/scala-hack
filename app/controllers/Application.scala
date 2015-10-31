@@ -15,6 +15,7 @@ import utils.RequestDTO
 import models.processor.RequestProcessor
 
 
+
 object Application extends Controller {
   def index = Action {
     Ok(views.html.index("Enter your query below "))
@@ -32,11 +33,14 @@ object Application extends Controller {
         && requestDTO.parameters.size > 0) {
       var result: String ="";
         if(requestDTO.method.equals(Constants.BRANDED_SEARCH)) {
+          println("branded serch")
           result = getRestContent(Constants.BrandedSerchUrl,requestDTO.parameters)
         } else if (requestDTO.method.equals(Constants.FLEXI_SEARCH)) {
-           result = getRestContent(Constants.FlexiSerchUrl,requestDTO.parameters)
-        } else if (requestDTO.method.equals(Constants.FLEXI_SEARCH)) {
-             result = getRestContent(Constants.FlightStatus,requestDTO.parameters)
+          println("fLEXI serch") 
+          result = getRestContent(Constants.FlexiSerchUrl,requestDTO.parameters)
+        } else if (requestDTO.method.equals(Constants.FLIGHT_STATUS)) {
+          println("branded serch")   
+          result = getRestContent(Constants.FlightStatus,requestDTO.parameters)
         }
     } else {
       println("Inputs are Wrong")
@@ -45,15 +49,18 @@ object Application extends Controller {
     Redirect(routes.Application.index())
   }
   
+  /**
+   * Get Rest Content From Middleware 
+   */
    def getRestContent(url:String, parameter : Map[String,String]): String = {
 
     val httpClient = new DefaultHttpClient()
     var url4: String = generateURIUsingParaMeters(Constants.BrandedSerchUrl, parameter)
 
     val obj = new HttpGet(url4);
-
+    
     obj.setHeader("Authorization", "Basic cmVzdEZsaWdodFdhdGNoOjEyMzQ1Ng==")
-    println("Content recieved with status")
+    println("Content recieved with status" + url4)
     val httpResponse = httpClient.execute(obj)
     val entity = httpResponse.getEntity()
     println("Content recieved with status" + httpResponse.getStatusLine.getStatusCode)
@@ -64,7 +71,8 @@ object Application extends Controller {
       content = io.Source.fromInputStream(inputStream).getLines.mkString
       inputStream.close
     }
-    println("Content recieved" + content)
+ 
+    
     httpClient.getConnectionManager().shutdown()
 
     return content

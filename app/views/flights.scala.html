@@ -1,20 +1,13 @@
 @(title: String)(content: Html)
 
-<!DOCTYPE html>
-<html>
-<head>
-  <title>@title</title>
-    <link rel='shortcut icon' type='image/png' href='@routes.Assets.at("images/favicon.png")'>
-    <link rel='stylesheet' href='@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap.min.css"))'>
-    <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery.min.js"))'></script>
-    <style>
-    body {
-        margin-top: 50px;
-    }
-    </style>
-
-</head>
-<body>
-
-</body>
-</html>
+<div class="navbar-fixed-top" id="navbar-collapse1" style="margin-top:230px">
+          <form class="navbar-form pull-left" action="@routes.Application.searchResults()" method="post">
+              <div class="input-group" style="max-width:270px;">
+                <input type="text" class="form-control" placeholder="Looking for ..." name="searchQuery" id="srch-term">
+                <div class="input-group-btn">
+                  <button class="btn btn-default btn-primary" type="submit"></button>
+                </div>
+              </div>
+          </form>
+         
+        </div>	
