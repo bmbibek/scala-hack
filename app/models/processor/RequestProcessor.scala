@@ -3,26 +3,47 @@ import utils.RequestDTO
 import models.forms.MySearchForm
 import utils.RequestDTO
 import utils.Constants
+import utils.NLPApi
 case object RequestProcessor {
   def processRequest(query: String): RequestDTO = {
-    
-   val dummyDTO : RequestDTO = RequestDTO(Constants.BRANDED_SEARCH,getDefaultSearchmap)
-   
+   val inputTuple :(String,String) = NLPApi.userInput(query)
+  // val dummyDTO : RequestDTO = RequestDTO(Constants.BRANDED_SEARCH,getDefaultSearchmap)
+   val inputMap : scala.collection.mutable.Map[String,String] = getDefaultSearchmap
+  if(inputTuple._1==Constants.BRANDED_SEARCH) {
+         if(inputTuple._2=="Dubai") {
+           inputMap += "destinationLocation" -> "DXB"
+           inputMap += "originLocation" -> "LHR"
+         } else  if(inputTuple._2=="London") {
+           inputMap += "destinationLocation" -> "LHR"
+           
+         }
+  }
+    val dummyDTO : RequestDTO = RequestDTO(inputTuple._1,inputMap)
    dummyDTO
   }
   
-   def getDefaultSearchmap :Map[String,String] = {
-     
-     val requestMap = Map("uid" -> "VMEXAELdc2CUbheoiZb6XT8Y",
+   def validateParameters(dummyDTO : RequestDTO) {
+      dummyDTO.method match {
+        case Constants.BRANDED_SEARCH =>
+                    println("Branded ");
+       case Constants.FLEXI_SEARCH =>
+             println("Flexi");
+       case _ =>
+         println("nt foound");
+      }
+  }
+   def getDefaultSearchmap :scala.collection.mutable.Map[String,String] = {
+    
+   return scala.collection.mutable.Map("uid" -> "VMEXAELdc2CUbheoiZb6XT8Y",
                        "clientIP" -> "10.14.128.7",
                        "channelCode" -> "MIPD",
                        "moduleCode" -> "IBE",
                        "deviceID" -> "DEVICEIDFORTEST",
                        "originLocation" -> "DXB",
-                       "destinationLocation" -> "LHR",
+                       "destinationLocation" -> "MEL",
                        "departureOutboundDateTime" -> "15-06-2016",
-                        "inBoundCabinClass" -> "",
-                       "departureInboundDateTime" -> "",
+                        "inBoundCabinClass" -> "Y",
+                       "departureInboundDateTime" -> "20-06-2016",
                        "outBoundCabinClass" -> "Y",
                         "adult" -> "1",
                          "child" -> "0",
@@ -34,8 +55,8 @@ case object RequestProcessor {
                               "locale"-> "en_XX",
                                "refresh"-> "false",
                                 "originCountry"-> "AE",
-                                "searchOrigin"-> "ON"
+                                "searchOrigin"-> "RE",
+                                "scala" -> "true"
                        )
-   return requestMap
    }
 }

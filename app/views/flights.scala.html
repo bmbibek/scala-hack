@@ -1,13 +1,81 @@
-@(title: String)(content: Html)
+@(message: String)
 
-<div class="navbar-fixed-top" id="navbar-collapse1" style="margin-top:230px">
-          <form class="navbar-form pull-left" action="@routes.Application.searchResults()" method="post">
-              <div class="input-group" style="max-width:270px;">
-                <input type="text" class="form-control" placeholder="Looking for ..." name="searchQuery" id="srch-term">
+@main("Emirates Simplified") {
+
+<div class="container-fluid">         	       
+        <div class="collapse navbar-collapse" id="navbar-collapse1" style="margin-top: 45px;">
+          <form class="navbar-form pull-left" action="/searchResults" method="post" style="width: 850px;">
+              <div class="input-group" style="width: 850px;padding-left: 88px;padding-right: 63px;">
+                <input type="text" class="form-control" placeholder="Looking for ..." name="searchQuery" id="srch-term" style="height: 44px;padding-left: 28px;">
                 <div class="input-group-btn">
-                  <button class="btn btn-default btn-primary" type="submit"></button>
+                  <button class="btn btn-default btn-primary" name="Search" type="submit" style="height: 43px;margin-top: 5px;width: 60px;margin-right: -23px;padding-right: 55px;">Search</button>
                 </div>
               </div>
-          </form>
-         
+          </form>         
         </div>	
+	</div>
+    <div class="col-md-4 col-sm-6" style="width: 850px; float: left;padding-left: 133px;">
+    	<div class="panel panel-default" style="">
+           <div class="panel-heading" style="height: 47px;"><a href="#" class="pull-right">View all</a> <h4>Results</h4></div>
+   			<div class="panel-body">             
+              <div class="well well-sm">
+                <div class="media">
+                    <a class="thumbnail pull-left" href="#">
+                        <img class="media-object" src="/assets/images/tale.jpg" style="height: 80px;">
+                    </a>
+                    <div class="media-body" style="padding-left: 53px;">
+                        <h4 class="media-heading">EK 540</h4>
+						<p style="height: 23px;"><span class="label label-info" style="">Dubai</span> 
+							<span class="label label-primary">London</span>
+						</p>
+						<p>
+							<span class="label label-info">14 Dec</span> <span class="label label-primary">02:30</span>
+						</p>                        
+                    </div>
+                </div>
+               </div>
+            </div>
+         </div> 
+    </div>
+<div class="col-md-4 col-sm-6" style="float: right;">
+    	<div class="panel panel-default">
+           <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>Recent Search</h4></div>
+   			<div class="panel-body">                                     
+              <div class="well well-sm">
+                <div class="media" style="height: 80px;">
+                    <a class="thumbnail pull-left" href="#">
+                        <img class="media-object" src="/assets/images/tale.jpg" style="height: 62px;">
+                    </a>
+                    <div class="media-body" style="padding-left: 53px;">
+                        <h4 class="media-heading">EK 540</h4>
+						<p style="height: 23px;"><span class="label label-info" style="">Dubai</span> 
+							<span class="label label-primary">London</span>
+						</p>
+						<p>
+							<span class="label label-info">14 Dec</span> <span class="label label-primary">02:30</span>
+						</p>                        
+                    </div>
+                </div>
+               </div>                                         
+              <hr>
+			<div class="well well-sm">
+                <div class="media" style="height: 80px;">
+                    <a class="thumbnail pull-left" href="#">
+                        <img class="media-object" src="/assets/images/tale.jpg" style="height: 62px;">
+                    </a>
+                    <div class="media-body" style="padding-left: 53px;">
+                        <h4 class="media-heading">EK 540</h4>
+						<p style="height: 23px;"><span class="label label-info" style="">Dubai</span> 
+							<span class="label label-primary">London</span>
+						</p>
+						<p>
+							<span class="label label-info">14 Dec</span> <span class="label label-primary">02:30</span>
+						</p>                        
+                    </div>
+                </div>
+               </div>  
+            </div>
+         </div> 
+    </div>	
+    
+    }

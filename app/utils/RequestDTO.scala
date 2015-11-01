@@ -1,3 +1,3 @@
 package utils
 
-case class RequestDTO (method: String , parameters: Map[String,String])
+case class RequestDTO (method: String , parameters: scala.collection.mutable.Map[String,String])

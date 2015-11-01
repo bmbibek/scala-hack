@@ -2,19 +2,16 @@
 
 @main("Emirates Simplified") {
  	
-        
-        <div class="collapse navbar-collapse" id="navbar-collapse1" style="margin-top:230px">
-          <form class="navbar-form pull-left" action="@routes.Application.searchResults()" method="post">
-              <div class="input-group" style="max-width:270px;">
-                <input type="text" class="form-control" placeholder="Looking for ..." name="searchQuery" id="srch-term">
+<div class="container-fluid">         	       
+        <div class="collapse navbar-collapse" id="navbar-collapse1" style="margin-top: 45px;">
+          <form class="navbar-form pull-left" action="@routes.Application.searchResults()" method="post" style="width: 100%;">
+              <div class="input-group" style="width: 1025px;padding-left: 268px;padding-right: 63px;padding-top: 138px;">
+                <input type="text" class="form-control" placeholder="Looking for ..." name="searchQuery" id="srch-term" style="height: 44px;padding-left: 28px;">
                 <div class="input-group-btn">
-                  <button class="btn btn-default btn-primary" type="submit"></button>
+                  <button class="btn btn-default btn-primary" name="Search" type="submit" style="height: 43px;margin-top: 5px;width: 60px;margin-right: -23px;padding-right: 55px;">Search</button>
                 </div>
               </div>
-          </form>
-         
+          </form>         
         </div>	
-    	
-
-
+	</div>
 }

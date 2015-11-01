@@ -1,24 +1,34 @@
+
 package controllers
 
-import models.forms.MySearchForm
-import play.api._
-import play.api.data.Form
-import play.api.data.Forms._
-import play.api.mvc._
+import java.util.ArrayList
+
 import org.apache.http.{HttpEntity,HttpResponse}
 import org.apache.http.client.{ClientProtocolException,HttpClient}
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.DefaultHttpClient
-import utils.Constants
+
 import models.forms.MySearchForm
-import utils.RequestDTO
+import models.forms.MySearchForm
 import models.processor.RequestProcessor
+import play.api._
+import play.api.data.Form
+import play.api.data.Forms._
+import play.api.libs.json.Json
+import play.api.mvc._
+import utils.Constants
+import utils.RequestDTO
+import utils.ScalaDTO
+
+
+
 
 
 
 object Application extends Controller {
   def index = Action {
-    Ok(views.html.index("Enter your query below "))
+    // var outBoundList : java.util.List[ScalaDTO] = new java.util.ArrayList()
+   Ok(views.html.flights("Done"))
   }
   
   val searchForm: Form[MySearchForm] = Form {
@@ -27,11 +37,11 @@ object Application extends Controller {
   def searchResults = Action { implicit request => 
     val searchData = searchForm.bindFromRequest.get
     println(searchData.searchQuery+" hello")
-   
+    var result: String ="";
     val requestDTO : RequestDTO =  RequestProcessor.processRequest(searchData.searchQuery)
     if (requestDTO.method != null && requestDTO.method.length() >0 
         && requestDTO.parameters.size > 0) {
-      var result: String ="";
+     
         if(requestDTO.method.equals(Constants.BRANDED_SEARCH)) {
           println("branded serch")
           result = getRestContent(Constants.BrandedSerchUrl,requestDTO.parameters)
@@ -45,14 +55,37 @@ object Application extends Controller {
     } else {
       println("Inputs are Wrong")
     }
- 
-    Redirect(routes.Application.index())
+        val json = Json.parse(result) 
+   
+   val json2 = json.as[Seq[String]]
+    var outBoundList : java.util.List[ScalaDTO] = new java.util.ArrayList()
+     var inBoundList : java.util.List[ScalaDTO] = new java.util.ArrayList()
+   
+    json2.foreach { node => 
+      if(node.startsWith("OT")) {
+      val outFlt : Array[String] = node.split("~")
+       var scalaDto : ScalaDTO = new ScalaDTO (
+           outFlt(1),
+           outFlt(2),
+           outFlt(3),
+           outFlt(4),
+           "",
+           outFlt(5),
+           outFlt(6),
+           "Economy",
+          outFlt(7) )
+      outBoundList.add(scalaDto)
+      } else if(node.startsWith("IN")) {
+        val outFlt : Array[String] = node.split("~")
+      }
+       } 
+  Ok(views.html.flights("test"))
   }
   
   /**
    * Get Rest Content From Middleware 
    */
-   def getRestContent(url:String, parameter : Map[String,String]): String = {
+   def getRestContent(url:String, parameter :  scala.collection.mutable.Map[String,String]): String = {
 
     val httpClient = new DefaultHttpClient()
     var url4: String = generateURIUsingParaMeters(Constants.BrandedSerchUrl, parameter)
@@ -71,8 +104,15 @@ object Application extends Controller {
       content = io.Source.fromInputStream(inputStream).getLines.mkString
       inputStream.close
     }
- 
+
+     
     
+
+    /*println("Sequence of String  "+json2)
+    val jelement = new JsonParser().parse(content)
+     var  jarray = jelement.getAsJsonObject()
+     println(jarray)*/
+     
     httpClient.getConnectionManager().shutdown()
 
     return content
@@ -83,7 +123,7 @@ object Application extends Controller {
    /**
     * 
     */
-   def generateURIUsingParaMeters(uri: String ,map:Map[String,String]): String = {
+   def generateURIUsingParaMeters(uri: String ,map: scala.collection.mutable.Map[String,String]): String = {
      var tempString: String = uri+"?"; 
      var count:Int = 0;
        map.keys.foreach { key=>
